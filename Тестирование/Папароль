@@ -1,0 +1,118 @@
+Библиотека
+---
+public static string checkPass(string password)
+        {
+            string correct = "все хорошо";
+            string error = "Попробуйте еще раз";
+            string sybmol = "!@#$%^&*()";
+            //не меньше 6 символов
+            if (password.Length >= 6)
+            {
+                string errorq = "Нужны спецсимволы";
+                //спецсимвол
+                if (password.Intersect(sybmol).Count() != 0)
+                {
+                    string errorw = "Нужны заглавные буквы";
+                    //заглавные
+                    if (password.Any(Char.IsUpper))
+                    {
+                        string errort = "Нужны строчные буквы";
+                        //строчные буквы
+                        if (password.Any(Char.IsLower))
+                        {
+                            string errore = "Нужны цифры";
+                            //цифры
+                            if (password.Any(Char.IsDigit))
+                            {
+                                return correct;
+                            }
+                            else return errore;
+                        }
+                        else return errort;
+                    }
+                    else return errorw;
+                }
+                else return errorq;
+            }
+            else return error;
+        }
+    }  
+
+---
+Тест
+---
+[TestClass()]
+    public class PasswordTests
+    {
+        [TestMethod()]
+        public void checkPassTestcorrect()
+        {
+            //arrange переменные
+            string password = "qwerty12345Q#";
+            string expected = "все хорошо";
+            //act вызов функции
+            string actual = Password.checkPass(password);
+            //assert проверка
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void checkPassTestdigit()
+        {
+            //arrange переменные
+            string password = "qwertyQ#";
+            string expected = "Нужны цифры";
+            //act вызов функции
+            string actual = Password.checkPass(password);
+            //assert проверка
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void checkPassTestlength()
+        {
+            //arrange переменные
+            string password = "qy1Q#";
+            string expected = "Попробуйте еще раз";
+            //act вызов функции
+            string actual = Password.checkPass(password);
+            //assert проверка
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void checkPassTestlower()
+        {
+            //arrange переменные
+            string password = "2341Q#";
+            string expected = "Нужны строчные буквы";
+            //act вызов функции
+            string actual = Password.checkPass(password);
+            //assert проверка
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void checkPassTestupper()
+        {
+            //arrange переменные
+            string password = "2341qw$";
+            string expected = "Нужны заглавные буквы";
+            //act вызов функции
+            string actual = Password.checkPass(password);
+            //assert проверка
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void checkPassTestspec()
+        {
+            //arrange переменные
+            string password = "2341qwQ";
+            string expected = "Нужны спецсимволы";
+            //act вызов функции
+            string actual = Password.checkPass(password);
+            //assert проверка
+            Assert.AreEqual(expected, actual);
+        }
+    }
